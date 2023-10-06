@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ClienteService {
 
@@ -17,6 +19,11 @@ public class ClienteService {
     public Page<ClienteDTO> findAllPage(PageRequest pageRequest){
         Page<Cliente> list = repository.findAll(pageRequest);
         return list.map(x -> new ClienteDTO(x));
+    }
+
+    public ClienteDTO findById(Long id){
+        Optional<Cliente> cliente = repository.findById(id);
+        return cliente.map(c -> new ClienteDTO(c)).orElse(null);
     }
 
 }

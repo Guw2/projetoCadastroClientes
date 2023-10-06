@@ -26,4 +26,9 @@ public class ClienteRecource {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return ResponseEntity.ok().body(service.findAllPage(pageRequest));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteDTO> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findById(id));
+    }
 }
