@@ -24,8 +24,12 @@ public class ClienteService {
     }
 
     public ClienteDTO findById(Long id){
-        Optional<Cliente> cliente = repository.findById(id);
-        return cliente.map(c -> new ClienteDTO(c)).orElse(null);
+        if (!repository.findById(id).isPresent()){
+            throw new ResourceNotFoundException("Resource Not Found Error.");
+        }else{
+            Optional<Cliente> cliente = repository.findById(id);
+            return cliente.map(c -> new ClienteDTO(c)).orElse(null);
+        }
     }
 
     public ClienteDTO insert(ClienteDTO clienteDTO){
@@ -44,7 +48,14 @@ public class ClienteService {
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Resource Not Found Error.");
         }
+    }
 
+    public void delete(Long id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Resource Not Found Error.");
+        }else {
+            repository.deleteById(id);
+        }
     }
 
     private void DtoToEntity(ClienteDTO dto, Cliente entity){

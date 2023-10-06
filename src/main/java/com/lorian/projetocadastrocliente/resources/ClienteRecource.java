@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.reactive.ClientHttpResponseDecorator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.ServletRequestPathUtils;
@@ -51,5 +52,11 @@ public class ClienteRecource {
             @PathVariable Long id, @RequestBody ClienteDTO dto
     ){
         return ResponseEntity.ok().body(service.update(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
