@@ -6,6 +6,7 @@ import java.time.Instant;
 
 public class ClienteDTO {
 
+    private Long Id;
     private String name;
     private String cpf;
     private Double income;
@@ -17,11 +18,20 @@ public class ClienteDTO {
     }
 
     public ClienteDTO(Cliente cliente){
+        Id = cliente.getId();
         name = cliente.getName();
         cpf = cliente.getCpf();
         income = cliente.getIncome();
         birthDate = cliente.getBirthDate();
         children = cliente.getChildren();
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 
     public String getName() {
