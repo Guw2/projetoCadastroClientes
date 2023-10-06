@@ -3,6 +3,8 @@ package com.lorian.projetocadastrocliente.resources;
 import com.lorian.projetocadastrocliente.DTOs.ClienteDTO;
 import com.lorian.projetocadastrocliente.entities.Cliente;
 import com.lorian.projetocadastrocliente.services.ClienteService;
+import com.lorian.projetocadastrocliente.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,5 +44,12 @@ public class ClienteRecource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(service.insert(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteDTO> update(
+            @PathVariable Long id, @RequestBody ClienteDTO dto
+    ){
+        return ResponseEntity.ok().body(service.update(id, dto));
     }
 }

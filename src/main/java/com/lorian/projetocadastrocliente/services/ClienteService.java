@@ -3,6 +3,8 @@ package com.lorian.projetocadastrocliente.services;
 import com.lorian.projetocadastrocliente.DTOs.ClienteDTO;
 import com.lorian.projetocadastrocliente.entities.Cliente;
 import com.lorian.projetocadastrocliente.repositories.ClienteRepository;
+import com.lorian.projetocadastrocliente.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,8 +35,19 @@ public class ClienteService {
         return new ClienteDTO(cliente);
     }
 
+    public ClienteDTO update(Long id, ClienteDTO clienteDTO){
+        try{
+            Cliente entity = repository.getReferenceById(id);
+            DtoToEntity(clienteDTO, entity);
+            repository.save(entity);
+            return new ClienteDTO(entity);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Resource Not Found Error.");
+        }
+
+    }
+
     private void DtoToEntity(ClienteDTO dto, Cliente entity){
-        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setCpf(dto.getCpf());
         entity.setChildren(dto.getChildren());
