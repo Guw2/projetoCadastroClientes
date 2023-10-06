@@ -1,6 +1,7 @@
 package com.lorian.projetocadastrocliente.resources;
 
 import com.lorian.projetocadastrocliente.DTOs.ClienteDTO;
+import com.lorian.projetocadastrocliente.entities.Cliente;
 import com.lorian.projetocadastrocliente.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.ServletRequestPathUtils;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/clientes")
@@ -30,5 +35,12 @@ public class ClienteRecource {
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDTO> findById(@PathVariable Long id){
         return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<ClienteDTO> insert(@RequestBody ClienteDTO dto){
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(service.insert(dto));
     }
 }

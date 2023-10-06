@@ -26,4 +26,20 @@ public class ClienteService {
         return cliente.map(c -> new ClienteDTO(c)).orElse(null);
     }
 
+    public ClienteDTO insert(ClienteDTO clienteDTO){
+        Cliente cliente = new Cliente();
+        DtoToEntity(clienteDTO, cliente);
+        repository.save(cliente);
+        return new ClienteDTO(cliente);
+    }
+
+    private void DtoToEntity(ClienteDTO dto, Cliente entity){
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setCpf(dto.getCpf());
+        entity.setChildren(dto.getChildren());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setIncome(dto.getIncome());
+    }
+
 }
